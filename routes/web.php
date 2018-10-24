@@ -18,9 +18,11 @@ Route::get('/', function () {
     return view('users', ['users'=>$users]);
 });
 
-Route::get('notes/{email}', 'NotesController@index');
-Route::get('notes/{email}/create', 'NotesController@create');
-Route::post('notes/{email}/create', 'NotesController@store');
-Route::get('notes/edit/{note}', 'NotesController@edit');
-Route::patch('notes/edit/{note}', 'NotesController@update');
-Route::delete('notes/delete', 'NotesController@destroy');
+Route::prefix('notes')->group(function() {
+    Route::get('{email}', 'NotesController@index');
+    Route::get('{email}/create', 'NotesController@create');
+    Route::post('{email}/create', 'NotesController@store');
+    Route::get('edit/{note}', 'NotesController@edit');
+    Route::patch('edit/{note}', 'NotesController@update')->name('notes.update');
+    Route::delete('delete/{note}', 'NotesController@destroy')->name('notes.delete');
+});

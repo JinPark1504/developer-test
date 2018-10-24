@@ -13,6 +13,8 @@ class NotesController extends Controller
     /**
      * Display a listing of the notes.
      *
+     * @param \Illuminate\Http\Request $request
+     * @param $user_email
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $user_email)
@@ -30,6 +32,7 @@ class NotesController extends Controller
     /**
      * Show the form for creating a new note.
      * 
+     * @param $user_email
      * @return \Illuminate\Http\Response
      */
     public function create($user_email)
@@ -43,6 +46,7 @@ class NotesController extends Controller
      * Sotre a newly created note in database.
      * 
      * @param \Illuminate\Http\Request $request
+     * @param $user_email
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $user_email)
@@ -73,7 +77,9 @@ class NotesController extends Controller
      */
     public function edit(Note $note)
     {
-        return view('notes.edit', compact('note'));
+        $user = User::find($note->user_id);
+        
+        return view('notes.edit', compact('note', 'user'));
     }
 
     /**
@@ -85,12 +91,18 @@ class NotesController extends Controller
      */
     public function update(Request $request, Note $note)
     {
+        $user = User::find($note->user_id);
+
         $note->title = $request->title;
         $note->body = $request->body;
 
         $note->save();
 
-        return 'Saved!';
+        $notes = Note::where('user_id', $user->id)
+                        ->orderBy('updated_at', 'DESC')
+                        ->get();
+
+        return view('notes.notes', compact('notes', 'user'));
     }
 
     /**
@@ -101,9 +113,14 @@ class NotesController extends Controller
      */
     public function destroy(Note $note)
     {
+        $user = User::find($note->user_id);
         $note->delete();
 
-        return 'Deleted!';
+        $notes = Note::where('user_id', $user->id)
+                        ->orderBy('updated_at', 'DESC')
+                        ->get();
+
+        return view('notes.notes', compact('notes', 'user'));
     }
 
 }

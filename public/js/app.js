@@ -13903,8 +13903,7 @@ window.Vue = __webpack_require__(36);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('edit-note', __webpack_require__(39));
+Vue.component('example-component', __webpack_require__(39));
 
 var app = new Vue({
   el: '#app'
@@ -47207,7 +47206,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/EditNote.vue"
+Component.options.__file = "resources/js/components/ExampleComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -47216,9 +47215,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0fd5a487", Component.options)
+    hotAPI.createRecord("data-v-299e239e", Component.options)
   } else {
-    hotAPI.reload("data-v-0fd5a487", Component.options)
+    hotAPI.reload("data-v-299e239e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -47359,87 +47358,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['note'],
-
-    data: function data() {
-        return {
-            title: this.note.title,
-            body: this.note.body,
-            usersEditing: [],
-            status: ''
-        };
-    },
     mounted: function mounted() {
-        var _this = this;
-
-        Echo.join('note.' + this.note.slug).here(function (users) {
-            _this.usersEditing = users;
-        }).joining(function (user) {
-            _this.usersEditing.push(user);
-        }).leaving(function (user) {
-            _this.usersEditing = _this.usersEditing.filter(function (u) {
-                return u != user;
-            });
-        }).listenForWhisper('editing', function (e) {
-            _this.title = e.title;
-            _this.body = e.body;
-        }).listenForWhisper('saved', function (e) {
-            _this.status = e.status;
-
-            // clear is status after 1s
-            setTimeout(function () {
-                _this.status = '';
-            }, 1000);
-        });
-    },
-
-
-    methods: {
-        editingNote: function editingNote() {
-            var _this2 = this;
-
-            var channel = Echo.join('note.' + this.note.slug);
-
-            // show changes after 1s
-            setTimeout(function () {
-                channel.whisper('editing', {
-                    title: _this2.title,
-                    body: _this2.body
-                });
-            }, 1000);
-        },
-        updateNote: function updateNote() {
-            var _this3 = this;
-
-            var note = {
-                title: this.title,
-                body: this.body
-            };
-
-            // persist to database
-            axios.patch('/edit/' + this.note.slug, note).then(function (response) {
-                // show saved status
-                _this3.status = response.data;
-
-                // clear is status after 1s
-                setTimeout(function () {
-                    _this3.status = '';
-                }, 1000);
-
-                // show saved status to others
-                Echo.join('note.' + _this3.note.slug).whisper('saved', {
-                    status: response.data
-                });
-            });
-        }
+        console.log('Component mounted.');
     }
 });
 
@@ -47451,90 +47373,38 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "panel panel-default" }, [
-    _c("div", { staticClass: "panel-heading" }, [_vm._v("Edit note")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel-body" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.title,
-              expression: "title"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text" },
-          domProps: { value: _vm.title },
-          on: {
-            keydown: _vm.editingNote,
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.title = $event.target.value
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.body,
-              expression: "body"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { rows: "15" },
-          domProps: { value: _vm.body },
-          on: {
-            keydown: _vm.editingNote,
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.body = $event.target.value
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary pull-right",
-          on: { click: _vm.updateNote }
-        },
-        [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v("\n            Users editing this note:  "),
-        _c("span", { staticClass: "badge" }, [
-          _vm._v(_vm._s(_vm.usersEditing.length))
-        ]),
-        _vm._v(" "),
-        _c("span", {
-          staticClass: "label label-success",
-          domProps: { textContent: _vm._s(_vm.status) }
-        })
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v("Example Component")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._v(
+                "\n                    I'm an example component.\n                "
+              )
+            ])
+          ])
+        ])
       ])
     ])
-  ])
-}
-var staticRenderFns = []
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0fd5a487", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-299e239e", module.exports)
   }
 }
 
