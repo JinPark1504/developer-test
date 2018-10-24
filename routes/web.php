@@ -17,3 +17,10 @@ Route::get('/', function () {
     $users = User::all();
     return view('users', ['users'=>$users]);
 });
+
+Route::get('notes/{email}', 'NotesController@index');
+Route::get('notes/{email}/create', 'NotesController@create');
+Route::post('notes/{email}/create', 'NotesController@store');
+Route::get('notes/edit/{note}', 'NotesController@edit');
+Route::patch('notes/edit/{note}', 'NotesController@update');
+Route::delete('notes/delete', 'NotesController@destroy');
